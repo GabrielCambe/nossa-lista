@@ -1,0 +1,7 @@
+{
+  "name": "nossalista",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom"
+}
