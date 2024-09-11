@@ -1,31 +1,21 @@
 import { MovieCard } from "@/components/MovieCard";
-
-interface Movie {
-  title: string;
-  genre: string;
-  year: string;
-  imageUrl: string;
-  link: string;
-}
+import { MovieType } from "@/lib/types";
 
 interface CategoryListProps {
   title: string;
-  movies: Movie[];
+  movies: MovieType[];
+  onMovieClick?: (movie: MovieType) => void;
 }
 
-export function CategoryList({ title, movies }: CategoryListProps) {
+export function CategoryList({ title, movies, onMovieClick }: CategoryListProps) {
   return (
-    <div className="space-y-2">
-      <h2 className="text-xl font-bold">{title}</h2>
+    <div>
+      <h2 className="text-2xl font-bold mb-4">{title}</h2>
       <div className="grid grid-cols-2 gap-4">
         {movies.map((movie) => (
           <MovieCard
-            key={movie.title} // Assuming title is unique
-            title={movie.title}
-            genre={movie.genre}
-            year={movie.year}
-            imageUrl={movie.imageUrl}
-            link={movie.link}
+            key={movie.id}
+            movie={movie}
           />
         ))}
       </div>

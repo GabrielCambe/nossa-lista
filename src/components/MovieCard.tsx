@@ -1,28 +1,19 @@
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import Image from "next/image";
+import { MovieType } from "@/lib/types";
 
 interface MovieCardProps {
-  title: string;
-  genre: string;
-  year: string;
-  imageUrl: string;
-  link: string;
+  movie: MovieType;
 }
 
-export function MovieCard({
-  title,
-  genre,
-  year,
-  imageUrl,
-  link,
-}: MovieCardProps) {
+export function MovieCard({ movie }: MovieCardProps) {
   return (
     <Card className="group overflow-hidden rounded-lg shadow-lg transition-all hover:scale-105 hover:shadow-xl">
-      <Link href={link} prefetch={false}>
+      <Link href={`/movie/${movie.id}`} prefetch={false}>
         <CardContent className="p-0 relative aspect-square">
           <Image
-            src={imageUrl}
+            src={movie.imageUrl}
             alt="Movie Poster"
             width={300}
             height={300}
@@ -31,13 +22,13 @@ export function MovieCard({
           />
           <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity p-4">
             <div className="text-white text-xl font-bold line-clamp-1">
-              {title}
+              {movie.title}
             </div>
             <div className="text-white text-sm font-medium line-clamp-1">
-              {genre}
+              {movie.genre}
             </div>
             <div className="text-white text-sm font-medium line-clamp-1">
-              {year}
+              {movie.year}
             </div>
           </div>
         </CardContent>

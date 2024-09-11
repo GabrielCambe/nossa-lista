@@ -1,17 +1,20 @@
 "use client";
-import { useState } from "react"; // Import useState
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import Link from "next/link";
 import { Dice5Icon, ListIcon, PlusIcon } from "@/components/icons";
-import { CategoryList } from "@/components/CategoryList"; // Updated import
-import { FilterDropdown } from "@/components/FilterDropdown"; // Updated import
-import { ProfileDropdown } from "@/components/ProfileDropdown"; // Updated import
-import { useAuth } from "@/context/AuthContext"; // Import the Auth context
+import { CategoryList } from "@/components/CategoryList";
+import { FilterDropdown } from "@/components/FilterDropdown";
+import { ProfileDropdown } from "@/components/ProfileDropdown";
+import { useAuth } from "@/context/AuthContext";
 import { Separator } from "@/components/ui/separator";
+import { moviesByCategory } from "@/lib/supabase"; // Update this import
 
 export function App() {
-  const [selectedCategory, setSelectedCategory] = useState<string>("Filter"); // State for selected category
+  const [selectedCategory, setSelectedCategory] = useState<string>("Filter");
 
   const handleFilterSelect = (category: string) => {
     setSelectedCategory(category);
@@ -19,89 +22,14 @@ export function App() {
     // Implement filtering logic here
   };
 
-  interface Movie {
-    title: string;
-    genre: string;
-    year: string;
-    imageUrl: string;
-    link: string;
-  }
-
-  type MoviesByCategory = {
-    [key: string]: Movie[];
-  };
-
-  const moviesByCategory: MoviesByCategory = {
-    Horror: [
-      {
-        title: "The Exorcist",
-        genre: "Horror",
-        year: "1973",
-        imageUrl: "/placeholder.svg",
-        link: "#",
-      },
-    ],
-    "Sci-Fi": [
-      {
-        title: "Inception",
-        genre: "Sci-Fi",
-        year: "2010",
-        imageUrl: "/placeholder.svg",
-        link: "#",
-      },
-    ],
-    Action: [
-      {
-        title: "The Shawshank Redemption",
-        genre: "Drama",
-        year: "1994",
-        imageUrl: "/placeholder.svg",
-        link: "#",
-      },
-      {
-        title: "Inception",
-        genre: "Sci-Fi",
-        year: "2010",
-        imageUrl: "/placeholder.svg",
-        link: "#",
-      },
-    ],
-    Comedy: [
-      {
-        title: "The Dark Knight",
-        genre: "Action",
-        year: "2008",
-        imageUrl: "/placeholder.svg",
-        link: "#",
-      },
-      {
-        title: "The Lord of the Rings: The Fellowship of the Ring",
-        genre: "Fantasy",
-        year: "2001",
-        imageUrl: "/placeholder.svg",
-        link: "#",
-      },
-    ],
-    Drama: [
-      {
-        title: "The Shawshank Redemption",
-        genre: "Drama",
-        year: "1994",
-        imageUrl: "/placeholder.svg",
-        link: "#",
-      },
-    ],
-  };
-
-  const userName = "John Doe"; // Example user name
-  const userEmail = "john@example.com"; // Example user email
-
   const { user, loading } = useAuth(); // Get user and loading state
 
   return (
     <div className="flex flex-col h-screen w-full bg-background text-foreground">
       {loading ? (
-        <div>Loading...</div>
+        <div className="flex justify-center items-center h-full">
+          <span className="loading loading-spinner loading-lg"></span>
+        </div>
       ) : user ? (
         <>
           <header className="flex items-center justify-between border-b px-4 py-3">
