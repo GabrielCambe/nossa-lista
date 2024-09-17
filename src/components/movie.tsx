@@ -18,21 +18,25 @@ import { MovieType } from '@/lib/types';
 export function Movie() {
   return (
     <div className="flex flex-col h-screen w-full bg-background text-foreground">
-      <div className="flex justify-between mb-8">
-        <Button variant="outline">
-          <ArrowLeftIcon className="mr-2 h-4 w-4" />
-          Return
-        </Button>
-        <Button variant="outline">
-          Share
-          <ShareIcon className="ml-2 h-4 w-4" />
-        </Button>
-      </div>
+      <header className="flex items-center justify-between border-b px-4 py-3">
+        <div className="flex justify-between mb-8">
+            <div className="fixed top-4 left-4">
+              <Button>
+                <ShareIcon className="ml-2 h-4 w-4" />
+                Share
+              </Button>
+            </div>
+            <div className="fixed top-4 right-4">
+              <Button>
+                <ArrowLeftIcon className="mr-2 h-4 w-4" />
+                Return
+              </Button>
+            </div>
+        </div>
+      </header>
       <main className={`flex-1 flex items-center justify-center ${inter.className}`}>
-        <div className="max-w-4xl w-full space-y-8">
-          <div>
-            <h2 className="mt-6 text-center text-3xl font-bold tracking-tight">Movie Details</h2>
-          </div>
+        <div className="max-w-4xl w-full space-y-10">
+          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight">Movie Details</h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div className="space-y-4">
               <div className="bg-muted rounded-lg p-4">

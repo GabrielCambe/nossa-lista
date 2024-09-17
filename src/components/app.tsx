@@ -1,7 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -10,19 +9,35 @@ import { CategoryList } from "@/components/CategoryList";
 import { FilterDropdown } from "@/components/FilterDropdown";
 import { ProfileDropdown } from "@/components/ProfileDropdown";
 import { useAuth } from "@/context/AuthContext";
-import { Separator } from "@/components/ui/separator";
-import { moviesByCategory } from "@/lib/supabase"; // Update this import
+import { getMoviesByCategory } from "@/lib/supabase";
+import { MoviesByCategoryType } from "@/lib/types";
 
 export function App() {
+  const { user, loading } = useAuth();
+  
   const [selectedCategory, setSelectedCategory] = useState<string>("Filter");
+  const [moviesByCategory, setMoviesByCategory] = useState<MoviesByCategoryType>({});
 
   const handleFilterSelect = (category: string) => {
     setSelectedCategory(category);
     console.log(`Selected category: ${category}`);
     // Implement filtering logic here
+    
   };
 
-  const { user, loading } = useAuth(); // Get user and loading state
+
+  useEffect(() => {
+    async function fetchMovies() {
+      try {
+        const data = await getMoviesByCategory();
+        setMoviesByCategory(data);
+      } catch (err: any) {
+        console.error(err.message);
+      }
+    }
+
+    fetchMovies();
+  }, []);
 
   return (
     <div className="flex flex-col h-screen w-full bg-background text-foreground">
@@ -54,17 +69,14 @@ export function App() {
             </div>
           </header>
           <main className="flex-1 overflow-y-auto">
-            <div className="px-4 pt-6 pb-8 relative">
+            <div className="px-4 py-10 relative">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {Object.keys(moviesByCategory).map((category: string) => (
-                  <>
+                  {Object.keys(moviesByCategory).map((category: string) => (
                     <CategoryList
                       key={category}
                       title={category}
                       movies={moviesByCategory[category]}
                     />
-                    <Separator className="w-full mt-4 mb-2" />
-                  </>
                 ))}
               </div>
               <div className="fixed bottom-4 right-4">

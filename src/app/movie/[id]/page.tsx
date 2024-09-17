@@ -1,11 +1,10 @@
 import { Movie } from '@/components/movie';
-import { MovieType } from '@/lib/types';
-import { moviesByCategory
-  // , movieById
-} from '@/lib/supabase';
+import { getMoviesByCategory } from '@/lib/supabase';
+import { MovieType, MoviesByCategoryType } from '@/lib/types';
 
 export async function generateStaticParams() {
-  const movieIds = Object.values(moviesByCategory).flat().map(movie => movie.id);
+  const moviesByCategory: MoviesByCategoryType = await getMoviesByCategory();
+  const movieIds = Object.values(moviesByCategory).flat().map((movie: MovieType) => movie.id);
   return movieIds.map(id => ({ id: id.toString() }));
 }
 
