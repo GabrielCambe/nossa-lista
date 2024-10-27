@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { auth } from "@/lib/firebase";
 import { onAuthStateChanged, User } from "firebase/auth";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 interface AuthContextType {
   user: User | null;
@@ -18,17 +18,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter(); // Use the router for redirection
+  const pathname = usePathname();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
-      if (!user) {
+      if (!user && pathname !== "/login" && pathname !== "/signup") {
         router.push("/login"); // Redirect to login if not authenticated
       }
     });
     return () => unsubscribe();
-  }, [router]);
+  }, [router, pathname]);
 
   return (
     <AuthContext.Provider value={{ user, loading }}>

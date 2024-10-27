@@ -9,7 +9,7 @@ import { CategoryList } from "@/components/CategoryList";
 import { FilterDropdown } from "@/components/FilterDropdown";
 import { ProfileDropdown } from "@/components/ProfileDropdown";
 import { useAuth } from "@/context/AuthContext";
-import { getMoviesByCategory } from "@/lib/supabase";
+import { getMoviesByCategory } from "@/lib/firestore";
 import { MoviesByCategoryType } from "@/lib/types";
 
 export function App() {

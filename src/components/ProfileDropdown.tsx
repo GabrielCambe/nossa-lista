@@ -11,12 +11,13 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { auth } from "@/lib/firebase";
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react"; // Import useEffect and useState
-import { onAuthStateChanged } from "firebase/auth"; // Import onAuthStateChanged
+import { useEffect, useState } from "react"; 
+import { onAuthStateChanged } from "firebase/auth"; 
 
 export function ProfileDropdown() {
   const [userName, setUserName] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [userPhotoURL, setUserPhotoURL] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -24,9 +25,11 @@ export function ProfileDropdown() {
       if (user) {
         setUserName(user.displayName); // Extract userName
         setUserEmail(user.email); // Extract userEmail
+        setUserPhotoURL(user.photoURL); // Set the photo URL
       } else {
         setUserName(null);
         setUserEmail(null);
+        setUserPhotoURL(null); // Clear the photo URL
       }
     });
 
@@ -47,7 +50,11 @@ export function ProfileDropdown() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="rounded-full">
           <Avatar className="h-8 w-8 border">
-            <AvatarImage src="/placeholder-user.jpg" />
+            {userPhotoURL ? (
+              <AvatarImage src={userPhotoURL} alt={userName || "User Avatar"} />
+            ) : (
+              <AvatarImage src="/placeholder-user.jpg" />
+            )}
             <AvatarFallback>
               {userName ? userName.charAt(0) : "?"}
             </AvatarFallback>
@@ -58,7 +65,11 @@ export function ProfileDropdown() {
       <DropdownMenuContent align="end">
         <div className="flex items-center gap-2 p-2">
           <Avatar className="h-8 w-8">
-            <AvatarImage src="/placeholder-user.jpg" />
+            {userPhotoURL ? (
+              <AvatarImage src={userPhotoURL} alt={userName || "User Avatar"} />
+            ) : (
+              <AvatarImage src="/placeholder-user.jpg" />
+            )}
             <AvatarFallback>
               {userName ? userName.charAt(0) : "?"}
             </AvatarFallback>

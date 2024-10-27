@@ -1,5 +1,5 @@
 import { Movie } from '@/components/movie';
-import { getMoviesByCategory } from '@/lib/supabase';
+import { getMoviesByCategory } from '@/lib/firestore';
 import { MovieType, MoviesByCategoryType } from '@/lib/types';
 
 export async function generateStaticParams() {
